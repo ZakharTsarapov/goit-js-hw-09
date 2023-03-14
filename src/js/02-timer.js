@@ -48,18 +48,20 @@ function startCounter(selectedDates) {
   }, DELAY);
 }
 
+// Текстовый контент приводим к строке
+
 function padValue(time) {
   refs.secondsValue.textContent = time.seconds.toString().padStart(2, '0');
   refs.minutesValue.textContent = time.minutes.toString().padStart(2, '0');
-  refs.hoursValue.textContent = time.hours.toString().padStart(2, '0');
+  refs.hoursValue.textContent = time.hours.toString().padStart(2, '0');             
   refs.daysValue.textContent = time.days.toString().padStart(2, '0');
 };
 
 function resetValues() {
-    refs.daysValue.textContent = '00';
-    refs.hoursValue.textContent = '00';
-    refs.minutesValue.textContent = '00';
-    refs.secondsValue.textContent = '00';
+    refs.daysValue.textContent = (0);
+    refs.hoursValue.textContent = (0);
+    refs.minutesValue.textContent = (0);
+    refs.secondsValue.textContent = (0);
 };
 
 
