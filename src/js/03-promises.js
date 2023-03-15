@@ -27,7 +27,6 @@ function onFormSubmit(event) {
 // приводим строку к числу через Number.
 // Делей лет, потому что перезаписываемая переменная.
   
-
   let delay = Number(formRefs.delay.value);
   const step = Number(formRefs.step.value);
   const amount = Number(formRefs.amount.value);

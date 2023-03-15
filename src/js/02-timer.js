@@ -49,7 +49,7 @@ function startCounter(selectedDates) {
     }
   }, DELAY);
 }
-// Текстовый контент приводим к строке
+// Текстовый контент приводим к строке, ну точнее цифровой значение приводим к строке для передачи в Текстовый Контент.
 function padValue(time) {
   refs.secondsValue.textContent = time.seconds.toString().padStart(2, '0');
   refs.minutesValue.textContent = time.minutes.toString().padStart(2, '0');
