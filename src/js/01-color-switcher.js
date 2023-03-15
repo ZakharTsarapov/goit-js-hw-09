@@ -20,5 +20,5 @@ refs.startBtn.addEventListener('click', () => {
 
 refs.stopBtn.addEventListener('click', () => {
   refs.startBtn.disabled = false;
-  clearInterval(intervalId);
+  clearInterval(intervalId); 
 });
