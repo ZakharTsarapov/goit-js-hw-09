@@ -13,55 +13,56 @@ const refs = {
   secondsValue: document.querySelector('[data-seconds]'),
 };
 
+refs.startBtn.disabled = true;
+let currentTime = new Date().getTime();
+let pickedTime = 0;
+
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose([selectedDates]) {
-    if (selectedDates < new Date()) {
-      refs.startBtn.disabled = true;
-      Notiflix.Notify.warning(
-        'Чертов мазафака накосячил в дате, выбери другую'
-      );
-    } else {
-      refs.startBtn.disabled = false;
-      refs.startBtn.addEventListener('click', () => {
-        startCounter(selectedDates);
-      });
-    }
+  onClose(selectedDates) {
+    pickedTime = selectedDates[0].getTime();
+    pickDate();
   },
 };
 
+function pickDate() {
+  if (pickedTime < currentTime) {
+    Notiflix.Notify.failure('Нет нет нет, выбери другое время !!!');
+  } else {
+    refs.startBtn.disabled = false;
+  }
+}
+
 flatpickr(refs.datetimePicker, options);
 
-function startCounter(selectedDates) {
-  const intervalId = setInterval(() => {
-    const currentTime = new Date();
-    const deltaTime = Math.floor(selectedDates - currentTime);
-    const time = convertMs(deltaTime);
+refs.startBtn.addEventListener('click', startCounter);
 
-    if (deltaTime <= 0) {
+function startCounter() {
+  const intervalId = setInterval(() => {
+    refs.startBtn.disabled = true;
+    let time = convertMs(pickedTime - Date.now());
+
+    if (time.seconds < 0) {
       clearInterval(intervalId);
-      resetValues();
+
     } else {
       padValue(time);
     }
   }, DELAY);
 }
 // Текстовый контент приводим к строке, ну точнее цифровой значение приводим к строке для передачи в Текстовый Контент.
-function padValue(time) {
-  refs.secondsValue.textContent = time.seconds.toString().padStart(2, '0');
-  refs.minutesValue.textContent = time.minutes.toString().padStart(2, '0');
-  refs.hoursValue.textContent = time.hours.toString().padStart(2, '0');
-  refs.daysValue.textContent = time.days.toString().padStart(2, '0');
+function updateValue(value) {
+  return String(value).padStart(2, '0');
 }
 
-function resetValues() {
-  refs.daysValue.textContent = 0;
-  refs.hoursValue.textContent = 0;
-  refs.minutesValue.textContent = 0;
-  refs.secondsValue.textContent = 0;
+function padValue({ days, hours, minutes, seconds }) {
+  refs.secondsValue.textContent = updateValue(`${seconds}`);
+  refs.minutesValue.textContent = updateValue(`${minutes}`);
+  refs.hoursValue.textContent = updateValue(`${hours}`);
+  refs.daysValue.textContent = updateValue(`${days}`);
 }
 
 function convertMs(ms) {
